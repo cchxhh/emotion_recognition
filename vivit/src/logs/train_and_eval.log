@@ -1,0 +1,19 @@
+2024-03-14 18:23:25.882 | INFO     | __main__:<module>:162 - Model saved: checkpoints/models/video//0.pth
+2024-03-14 18:23:25.883 | INFO     | __main__:<module>:165 - Accuracy in (1/10): test: 10.09%, train: 30.33%
+2024-03-14 18:23:36.986 | INFO     | __main__:<module>:170 - F1 Score: 1.85
+2024-03-14 21:15:56.328 | INFO     | extractor.utils:update:104 - Early stopping by accuracy!
+2024-03-14 21:17:49.582 | INFO     | __main__:<module>:162 - Model saved: checkpoints/models/video//0.pth
+2024-03-14 21:17:49.583 | INFO     | __main__:<module>:165 - Accuracy in (1/10): test: 13.76%, train: 28.03%
+2024-03-14 21:18:00.781 | INFO     | __main__:<module>:170 - F1 Score: 3.33
+2024-03-15 00:07:20.838 | INFO     | extractor.utils:update:104 - Early stopping by accuracy!
+2024-03-15 00:09:11.064 | INFO     | __main__:<module>:162 - Model saved: checkpoints/models/video//1.pth
+2024-03-15 00:09:11.065 | INFO     | __main__:<module>:165 - Accuracy in (2/10): test: 13.76%, train: 20.92%
+2024-03-15 00:09:21.883 | INFO     | __main__:<module>:170 - F1 Score: 3.33
+2024-03-15 03:15:05.778 | INFO     | extractor.utils:update:104 - Early stopping by accuracy!
+2024-03-15 03:16:55.996 | INFO     | __main__:<module>:162 - Model saved: checkpoints/models/video//2.pth
+2024-03-15 03:16:55.997 | INFO     | __main__:<module>:165 - Accuracy in (3/10): test: 42.20%, train: 31.13%
+2024-03-15 03:17:07.158 | INFO     | __main__:<module>:170 - F1 Score: 25.05
+2024-03-15 06:06:03.439 | INFO     | extractor.utils:update:104 - Early stopping by accuracy!
+2024-03-15 06:07:53.845 | INFO     | __main__:<module>:162 - Model saved: checkpoints/models/video//3.pth
+2024-03-15 06:07:53.846 | INFO     | __main__:<module>:165 - Accuracy in (4/10): test: 13.76%, train: 37.04%
+2024-03-15 06:08:04.870 | INFO     | __main__:<module>:170 - F1 Score: 3.33
