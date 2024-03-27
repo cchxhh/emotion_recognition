@@ -21,7 +21,7 @@ logger.add("logs/train_and_eval.log", rotation="10 MB")
 
 def train_and_eval(
     model: nn.Module,
-    num_epochs: int,
+    num_epochs: int, 
     train_data_loader: DataLoader,
     test_data_loader: DataLoader,
 ):
@@ -29,9 +29,11 @@ def train_and_eval(
 #     {'params': fc.parameters(), 'lr': 0.001},  # 新的全连接层的学习率
 #     {'params': pre_model.parameters()}  # 其他参数使用默认学习率
 # ], lr=0.0001)
-    optimizer = torch.optim.Adam(model.pre_model.classifier.parameters(), lr=0.001)
+    #optimizer = torch.optim.Adam([{'params':model.classifier.parameters(), 'lr':0.0001},{'params':model.backbone.pooler.parameters(), 'lr':0.0001}])
+    optimizer = torch.optim.Adam(model.classifier.parameters(), lr=0.0001)
+
     with Progress("[red](Loss: {task.fields[loss_value]:.8f})", *Progress.get_default_columns()) as progress:
-        stopper = EarlyStopper(10)
+        stopper = EarlyStopper(5)
 
         task = progress.add_task(
             f"[green]Begin to train",
@@ -43,8 +45,8 @@ def train_and_eval(
             loss_value = float("inf")
             loss_value_list = []
             for features, labels in train_data_loader:
-                #print(features.shape)
-                #print(labels.shape,len(labels))
+                # print(features.shape)
+                # print(labels.shape,len(labels))
                 outputs=[]
                 for i in range(len(labels)):
                     output=[]
@@ -52,7 +54,7 @@ def train_and_eval(
                     #print(features[i].shape,labels)
                     #outputs = model(torch.tensor(features[i]))
                     output = model(features[i])
-                    output = output.logits
+                    #output = output.logits
                     outputs.append(output)
                 outputs = torch.cat(outputs,dim=0)
                 loss = criterion(outputs, labels)
@@ -72,11 +74,11 @@ def train_and_eval(
     return train_accuracy, test_accuracy
 
 
-num_epochs = 1000
+num_epochs = 100
 batch_size = 256
 num_classes = 7
 use_cuda = True
-features_path = "/home/cv/Project1/cxh/multi_model/vivit/src/features/data.pkl"
+features_path = "/home/cv/Project1/cxh/multi_model/vivit/vivit/src/features/data.pkl"
 
 criterion = nn.CrossEntropyLoss()
 if use_cuda:
@@ -97,9 +99,9 @@ mean_f1_scores = {}
 #print(model)
 
 
-num_classes = 7  
+num_classes = 7 
 model = vivitModel(num_classes)
-#print(model)
+print(model)
 # for name, param in model.named_parameters():
 #     print(f"Parameter name: {name}")
 #     print(f"Parameter shape: {param.shape}")
@@ -116,7 +118,7 @@ for i, (train_dataset, test_dataset) in enumerate(
     split_dataset_by_class(VideoFeaturesDataset(features_dict, use_cuda=use_cuda), folds=10)
 ):
     
-    checkpoint_dir = f"checkpoints/models/video/"
+    checkpoint_dir = f"checkpoints/models/video/lr0.0001_dropout0.2_epoch100"
     os.makedirs(checkpoint_dir, exist_ok=True)
     model_path = f"{checkpoint_dir}/{i}.pth"
 
@@ -126,7 +128,7 @@ for i, (train_dataset, test_dataset) in enumerate(
     
     train_data_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     # m= next(iter(train_data_loader))
-    # print(m[0].shape)
+    # print(m[1].shape)
     test_data_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
     if use_cuda:

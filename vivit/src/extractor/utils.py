@@ -31,15 +31,15 @@ def calculate_accuracy(model: nn.Module, data_loader: DataLoader):
         for features, labels in data_loader:
             for i in range(len(labels)):
                 outputs = model(features[i])
-                _, predicted = torch.max(outputs.logits.data, 1)  # 获取最大概率的预测结果
-            total += labels.size(0)  # 更新总样本数
-            correct += (predicted == labels).sum().item()  # 更新正确预测的样本数
-
+                _, predicted = torch.max(outputs.data, 1)  # 获取最大概率的预测结果
+                # total += labels.size(0)  # 更新总样本数
+                correct += (predicted == labels[i]).sum().item()  # 更新正确预测的样本数
+            total += labels.size(0)
     accuracy = 100 * correct / total
     return accuracy
 
 
-def calculate_class_weights(data_loader: DataLoader, num_classes: int = 130):
+def calculate_class_weights(data_loader: DataLoader, num_classes: int = 7):
     class_counts = [0] * num_classes
 
     for _, labels in data_loader:
@@ -61,9 +61,14 @@ def calculate_f1_score(model: nn.Module, data_loader: DataLoader):
     class_counts = [0] * num_classes
 
     for features, labels in data_loader:
+        #print(labels.shape)
+        predicted = torch.zeros_like(labels)
         for i in range(len(labels)):
+            #print(len(labels))
             outputs = model(features[i])
-            _, predicted = torch.max(outputs.logits.data, 1)
+            _, predict = torch.max(outputs.data, 1)
+            predicted[i] = predict.item()
+            
 
         for i in range(num_classes):
             true_positives = ((predicted == i) & (labels == i)).sum().item()
@@ -83,12 +88,12 @@ def calculate_f1_score(model: nn.Module, data_loader: DataLoader):
     for i in range(num_classes):
         class_weight = class_weights[i]
         class_f1 = class_f1_scores[i] / class_counts[i]
-        weighted_f1_score += class_weight * class_f1
+        weighted_f1_score += class_weight * class_f1_scores[i]
     return 100 * weighted_f1_score
 
 
 class EarlyStopper:
-    def __init__(self, patience: int = 10):
+    def __init__(self, patience: int = 5):
         self.patience = patience
         self.best_scores = {}
 

@@ -22,6 +22,7 @@ class VideoFeaturesDataset(Dataset):
         # features = torch.cat([torch.zeros(20 - features.shape[0], features.shape[1]), features])
         if self.use_cuda:
             #print(features["pixel_values"].shape)
+            #print (label)
             return features["pixel_values"].cuda(), torch.tensor(label, dtype=torch.int64).cuda()
             # print(features["pixel_values"].shape)
         else:

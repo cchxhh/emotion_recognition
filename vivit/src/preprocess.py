@@ -93,8 +93,8 @@ with open (dataset_text_path,"r") as textfile:
         label = emotion2int(row["Emotion"])
         
         filename = "dia"+dia_id+"_utt"+utt_id+".mp4"
-        if label == None:
-            print(filename)
+        # if label == None:
+        #     print(filename)
         label_dict[filename] = label
 
 
@@ -119,11 +119,12 @@ with Progress() as progress:
             
             inputs = image_processor(list(video), return_tensors="pt")
             label = label_dict.get(filename)
-            if label == None:
-                print(filename)
+            # if label == None:
+            #     print(filename)
             #inputs["labels"] = label
-            processed_data[(label,index)] = inputs
-            
+            if label !=  None:
+                processed_data[(label,index)] = inputs
+
             #print(filename)
             #print(processed_data)
 
@@ -138,7 +139,7 @@ with Progress() as progress:
 #             predicted_label = logits.argmax(-1).item()
 #             print(model.config.id2label[predicted_label])
 # #print(processed_data)
-with open(f"/home/cv/Project1/cxh/multi_model/vivit/src/features/data.pkl", "wb") as file:
+with open(f"/home/cv/Project1/cxh/multi_model/vivit/vivit/src/features/data.pkl", "wb") as file:
     pickle.dump(processed_data, file)
     
 
